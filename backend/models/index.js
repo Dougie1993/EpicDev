@@ -14,5 +14,21 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+
 db.contacts = require("./contact.model.js")(sequelize, Sequelize);
+db.information = require("./information.model")(sequelize, Sequelize);
+db.note = require("./note.model")(sequelize, Sequelize);
+
+db.contacts.hasMany(db.information, {as: "information"});
+db.contacts.hasMany(db.note, {as: "note"});
+
+db.information.belongsTo(db.contacts, {
+  foreignKey: "contactId",
+  as: "contact"
+});
+db.note.belongsTo(db.contacts,{
+  foreignKey: "contactId",
+  as: "contact"
+});
+
 module.exports = db;

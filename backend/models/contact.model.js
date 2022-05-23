@@ -21,6 +21,8 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.BOOLEAN,
         default: false
       }
+    },{
+      timestamps: false
     });
     return Contact;
   };

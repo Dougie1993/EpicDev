@@ -16,4 +16,7 @@ module.exports = (app) => {
     app.put('/contact',
     ContactController.batchDelete)
 
+    app.get('/search',
+    ContactController.search)
+
 }
