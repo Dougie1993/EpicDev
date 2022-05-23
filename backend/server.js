@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const db = require("./models");
+const config = require("./config/config")
 var corsOptions = {
   origin: "http://localhost:8081"
 };
@@ -11,20 +12,23 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
-// simple route
+// simple routes
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Epic Dev application." });
 });
+
 require('./routes/routes')(app)
-// set port, listen for requests
-const PORT = process.env.PORT || 8082;
 
+// handle 404 request
+app.use((req, res, next) => {
+  res.status(404).send("Sorry can't find that!")
+})
 
-
+// Start db instance and serve. Forced true to drop tables whenever server restarts
 db.sequelize.sync({ force: true }).then(() => {
     console.log("Drop and re-sync db.");
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}.`);
+    app.listen(config.port, () => {
+      console.log(`Server is running on port ${config.port}.`);
     });
 }).catch(err => {
   console.error('unable to connect ', err.message)

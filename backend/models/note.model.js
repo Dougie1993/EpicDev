@@ -1,3 +1,4 @@
+// Note model
 module.exports = (sequelize, Sequelize) => {
     const Note = sequelize.define("note", {
       noteTitle: {

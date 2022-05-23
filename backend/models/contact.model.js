@@ -1,3 +1,4 @@
+// Contact Table/Model
 module.exports = (sequelize, Sequelize) => {
     const Contact = sequelize.define("contact", {
       id: {

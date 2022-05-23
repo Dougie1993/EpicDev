@@ -10,13 +10,13 @@ module.exports = (app) => {
     // Get contact by id
     app.get('/contact/:id', 
     ContactController.findOne),
-    // Update contact by id 
+    // Update contact by id or soft delete contact
     app.put('/contact/:id', 
     ContactController.update),
-    // Update/Soft delete all contacts
+    // Soft delete all contacts
     app.put('/contact',
     ContactController.batchDelete)
-
+    // Search function
     app.get('/search',
     ContactController.search)
 

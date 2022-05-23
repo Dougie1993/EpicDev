@@ -1,3 +1,4 @@
+// Information table/Model
 module.exports = (sequelize, Sequelize) => {
     const Information = sequelize.define("information", {
       email: {

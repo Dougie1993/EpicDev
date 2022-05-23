@@ -162,8 +162,6 @@ exports.batchDelete = (req, res) => {
 // Search Contact
 exports.search = (req, res) => {
     let term = req.query.name;
-    console.log('we checking whats in the query')
-    console.log(term)
     try {
         Contact.findAll({ 
             where: { deleted: null,
@@ -227,9 +225,6 @@ exports.search = (req, res) => {
                         message: `No contact found that has ${term}`
                     })
                 }
-            //   res.send({
-            //       message: `No contact found that has ${term}`
-            //   })
             } else {
               res.send(data)
             }
