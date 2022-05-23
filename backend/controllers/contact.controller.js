@@ -97,7 +97,9 @@ exports.findOne = (req, res) => {
 // Update a Contact by the id in the request
 exports.update = (req, res) => {
     const id = req.params.id
-    Contact.update(req.body, {where: { id: id},  include: ["information", "note"]})
+    console.log(req.body)
+    try {
+        Contact.update(req.body, {where: { id: id},  include: ["information", "note"]})
         .then(num => {
             if (num == 1) {
                 if (req.body.deleted !== null) {
@@ -135,20 +137,15 @@ exports.update = (req, res) => {
                 message: `Error updaating contact with id= ${id}`
             })
         })
-};
-// Delete a Contact with the specified id in the request
-exports.delete = (req, res) => {
-  
-};
-// Delete all Contact from the database.
-exports.deleteAll = (req, res) => {
-  
-};
-// Find all published Contact
-exports.findAllPublished = (req, res) => {
-  
+    } catch (err) {
+        res.status(400).send({
+            message: err.message
+        })
+    }
+
 };
 
+// batch delete
 exports.batchDelete = (req, res) => {
     Contact.update({deleted: true }, {where: {deleted: null},  include: ["information", "note"]})
         .then(data => {
@@ -165,11 +162,13 @@ exports.batchDelete = (req, res) => {
 // Search Contact
 exports.search = (req, res) => {
     let term = req.query.name;
+    console.log('we checking whats in the query')
+    console.log(term)
     try {
         Contact.findAll({ 
-            where: {
+            where: { deleted: null,
                 [Op.or]: [
-                  { name: { [Op.like]: '%' + term + '%'} },
+                  { name: { [Op.like]: `%${term}%`} },
                   { surname: { [Op.like]: '%' + term + '%'} }
                 ]
               },
